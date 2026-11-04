@@ -1,0 +1,33 @@
+#doppler-exp{color:var(--viz-text);font-size:16px}
+#doppler-exp .stage{position:relative;background:radial-gradient(ellipse at 48% 45%,#162d49,#091521 85%);border:1px solid #30465a;border-radius:15px;overflow:hidden;aspect-ratio:1.6}
+#doppler-exp canvas{display:block;width:100%;height:100%}
+#doppler-exp .overlay{position:absolute;pointer-events:none;color:#d6eaff;font-size:11px}
+#doppler-exp .panel{background:var(--viz-card);border:1px solid var(--viz-border);border-radius:12px;padding:14px;margin-bottom:12px}
+#doppler-exp .muted{color:var(--viz-muted);font-size:12px}
+#doppler-exp .btn{border:1px solid var(--viz-border);background:#223447;color:var(--viz-text);border-radius:8px;padding:8px 13px;font-size:12px;cursor:pointer}
+#doppler-exp .btn:hover{background:#30475f}
+#doppler-exp .btn.active{border-color:#479cec;background:var(--viz-accent-bg)}
+#doppler-exp input[type=range]{width:100%;accent-color:#479cec}
+#doppler-exp .number{font-size:clamp(20px,4vw,29px);font-weight:700;font-variant-numeric:tabular-nums;line-height:1.2}
+#doppler-exp .number .unit{font-size:12px}
+#doppler-exp .number.emphasis{color:#f2bb70}
+#doppler-exp .number.delta{color:#5bd9b2}
+#doppler-exp .inputline{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:9px}
+#doppler-exp .chart{display:block;width:100%;height:58px;flex:1}
+#doppler-exp .hint{line-height:1.7}
+#doppler-exp .button-row{display:flex;flex-wrap:wrap;gap:10px}
+#doppler-exp .statistics{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+#doppler-exp .label{font-size:14px;font-weight:700}
+#doppler-exp .value{font-size:14px;font-weight:700}
+#doppler-exp .range-label{display:flex;justify-content:space-between;font-size:12px;color:var(--viz-muted);margin-top:6px}
+#doppler-exp .top-gap{padding-top:4px}
+#doppler-exp .wave-row{display:flex;align-items:center;gap:10px}
+#doppler-exp .wave-label{width:62px;font-size:12px}
+#doppler-exp .wave-label.origin{color:#55cffa}
+#doppler-exp .wave-label.observed{color:#f2bb70}
+#doppler-exp .center{text-align:center}
+#doppler-exp .info-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;font-size:14px}
+#doppler-exp .footnote{margin:6px 0 18px;line-height:1.8}
+#doppler-exp .space-y>*+*{margin-top:10px}
+@media(max-width:720px){#doppler-exp .statistics{grid-template-columns:1fr}#doppler-exp .stage{aspect-ratio:1.25}}
+@media(max-width:420px){#doppler-exp .stage{aspect-ratio:1.18}#doppler-exp .panel{padding:11px}#doppler-exp .wave-row{align-items:flex-start;flex-direction:column}#doppler-exp .wave-label{width:auto}}
