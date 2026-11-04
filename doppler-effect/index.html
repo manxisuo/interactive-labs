@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#101923">
+<title>多普勒效应实验室 · Interactive Labs</title>
+<link rel="stylesheet" href="../shared.css"><link rel="stylesheet" href="style.css">
+</head>
+<body><main id="doppler-exp" class="lab-container">
+<header class="lab-top"><div><a class="back" href="../">← 所有实验</a><h1>多普勒效应 · 交互式物理实验室</h1><p>观察运动声源的波阵面压缩/拉伸，以及观察频率的变化</p></div><span class="tag">SOUND / WAVES</span></header>
+<section class="panel"><div class="stage" id="d-stage"><canvas id="d-world" width="800" height="500" aria-label="运动声源产生的圆形波阵面动态演示"></canvas><div class="overlay" style="top:12px;left:13px">SOUND WAVE SIMULATION</div><div class="overlay" style="bottom:12px;left:13px"><span style="color:#55d5fa">●</span> 声源　 <span style="color:#f3b966">●</span> 观察者</div><div class="overlay" style="bottom:12px;right:13px" id="d-clock">t = 0.0 s</div></div></section>
+<div class="statistics"><div class="panel"><div class="muted">声源频率</div><div class="number"><span id="d-f0">440</span><span class="unit"> Hz</span></div></div><div class="panel"><div class="muted">观察频率</div><div class="number emphasis"><span id="d-fo">587</span><span class="unit"> Hz</span></div></div><div class="panel"><div class="muted">频率变化</div><div class="number delta" id="d-delta">+33.3%</div></div></div>
+<section class="panel space-y"><div class="button-row"><button class="btn active" id="d-play">Ⅱ 暂停</button><button class="btn" id="d-reset">↺ 重置</button><button class="btn" id="d-tone">♪ 播放纯音</button></div>
+<div class="inputline"><div class="label">声源速度</div><div class="value" id="d-speed-text">+85 m/s</div></div>
+<input id="d-speed" type="range" min="-255" max="255" step="5" value="85" aria-label="声源速度">
+<div class="range-label"><span>← 远离方向</span><span>静止</span><span>接近方向 →</span></div>
+<div class="button-row"><button class="btn" data-v="-170">高速远离</button><button class="btn" data-v="0">静止</button><button class="btn active" data-v="85">低速接近</button><button class="btn" data-v="170">高速接近</button></div>
+<div class="inputline top-gap"><span class="label">声源原始频率</span><span class="value" id="d-freq-label">440 Hz</span></div>
+<input id="d-freq" type="range" min="200" max="1000" step="20" value="440" aria-label="声源频率"><div class="range-label"><span>200 Hz</span><span>1000 Hz</span></div></section>
+<section class="panel space-y"><div class="inputline"><b class="label">声波信号对比</b><span class="muted">归一化波形</span></div><div class="wave-row"><span class="wave-label origin">原始频率</span><canvas id="d-wave0" class="chart"></canvas></div><div class="wave-row"><span class="wave-label observed">观察频率</span><canvas id="d-wave1" class="chart"></canvas></div><div class="muted center">相同时间窗口；横向波形周期数代表频率比，非真实音频采样</div></section>
+<section class="panel space-y"><div class="inputline"><b class="label">实时物理状态</b><span class="muted" id="d-state">声源正在接近观察者</span></div><div class="info-grid"><div><div class="muted">空气中的声速</div><b>340 m/s</b></div><div><div class="muted">声源速度 / 声速</div><b id="d-mach">0.25 Ma</b></div><div><div class="muted">前方波长</div><b id="d-front">0.580 m</b></div><div><div class="muted">后方波长</div><b id="d-back">0.966 m</b></div></div><div class="muted hint" id="d-explain">声源向右运动时，右侧的波阵面变密，左侧变疏。观察者位于声源右侧时，接收到的频率升高。</div></section>
+<p class="muted footnote">教学模型：采用 340 m/s 的声速，视觉上缩放了传播距离与发波周期，便于观察波阵面变化。声音按钮播放的是根据计算结果实时生成的纯音，用于帮助感受接近/远离时的频率变化。</p>
+</main><script src="app.js"></script></body></html>
