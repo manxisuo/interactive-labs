@@ -13,6 +13,7 @@
 | [genetic-evolution/](./genetic-evolution/) | 进化实验室 | 原生 HTML/CSS/JavaScript、Canvas 2D |
 | [game-of-life/](./game-of-life/) | 康威生命游戏 | 原生 HTML/CSS/JavaScript、Canvas 2D |
 | [ecosystem/](./ecosystem/) | 微型生态圈 | 原生 HTML/CSS/JavaScript、Canvas 2D |
+| [microscope/](./microscope/) | 光学显微镜实验室 | 原生 HTML/CSS/JavaScript、SVG、Canvas 2D |
 | [glider-logic/](./glider-logic/) | 滑翔机逻辑计算实验室 | 原生 HTML/CSS/JavaScript、Canvas 2D |
 
 ## 本地运行
