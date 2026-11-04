@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f1823"><title>AM 收音机原理 · Interactive Labs</title><link rel="stylesheet" href="../shared.css"><link rel="stylesheet" href="style.css"></head>
+<body><main id="am-chain-02" class="lab-container">
+<header class="lab-top"><div><a class="back" href="../">← 所有实验</a><h1>AM 收音机 · 从声音到无线电再到声音</h1><p>原始声音 → 调幅发射 → 天线接收 → 选频 → 检波还原</p></div></header>
+<section class="panel space-y-3">
+  <div class="flex justify-between align-center"><strong>1. 声音信号发生器</strong><span class="small">模拟麦克风输入</span></div>
+  <div class="control"><div class="flex justify-between"><span>声音频率</span><strong id="ac-freq-value">3 Hz</strong></div><input id="ac-freq" type="range" min="1" max="10" value="3" step="0.5" aria-label="声音频率"><div class="flex justify-between small"><span>低频 · 波形稀疏</span><span>高频 · 波形密集</span></div></div>
+  <div class="control"><div class="flex justify-between"><span>声音振幅</span><strong id="ac-amp-value">70%</strong></div><input id="ac-amp" type="range" min="0" max="100" value="70" step="5" aria-label="声音振幅"><div class="flex justify-between small"><span>安静 / 小音量</span><span>大音量</span></div></div>
+  <div class="wave"><div class="head"><strong><span style="color:#10b981">●</span> 原始声音波形</strong><span class="small">低频信号 m(t)</span></div><canvas id="ac-original" aria-label="原始声音波形"></canvas></div>
+  <div class="small">为了便于观察，这里使用 1–10 Hz 的低频教学信号，不代表正常人声的实际频率范围。</div>
+</section>
+<div class="between">↓　声音控制高频载波的振幅</div>
+<section class="panel space-y-2"><strong>2. 调幅发射器（AM）</strong>
+  <div class="wave"><div class="head"><strong><span style="color:#94a3b8">●</span> 调幅前：纯载波</strong><span class="small">高频正弦波</span></div><canvas id="ac-carrier" aria-label="纯载波"></canvas></div>
+  <div class="wave"><div class="head"><strong><span style="color:#f59e0b">●</span> 调幅后：无线电信号</strong><span class="small">声音改变振幅包络</span></div><canvas id="ac-modulated" aria-label="AM 调幅波形"></canvas></div>
+</section>
+<div class="between">↓　天线接收多个电台的混合电波</div>
+<section class="panel space-y-3"><strong>3. 收音机：选频与检波</strong>
+  <div class="flex justify-between"><span>接收机调谐频率</span><strong id="ac-tune-value">800 kHz</strong></div>
+  <input id="ac-tune" type="range" min="700" max="1300" value="800" step="5" aria-label="收音机调谐频率">
+  <div class="flex gap"><button class="grow active" id="ac-st-a">电台 A · 800 kHz</button><button class="grow" id="ac-st-b">电台 B · 1200 kHz</button></div>
+  <div class="flex justify-between small"><span id="ac-status" role="status">已选中电台 A</span><span id="ac-strength">信号 100%</span></div><div class="meter"><div id="ac-meter" style="width:100%"></div></div>
+  <div class="wave"><div class="head"><strong><span style="color:#60a5fa">●</span> 选频后的 AM 信号</strong><span class="small">带通滤波</span></div><canvas id="ac-filtered" aria-label="选频后的信号"></canvas></div>
+  <div class="wave"><div class="head"><strong><span style="color:#a78bfa">●</span> 检波还原的声音</strong><span class="small">去载波、提取包络</span></div><canvas id="ac-recovered" aria-label="恢复声音波形"></canvas></div>
+</section>
+<section class="panel space-y-2">
+  <div class="flex justify-between align-center gap"><div><strong>4. 原始声音 vs 还原声音</strong><div class="small space-top">绿色为原始信号，紫色为接收后恢复的信号</div></div><button id="ac-pause">暂停</button></div>
+  <div class="wave"><canvas id="ac-compare" aria-label="原始声音与恢复声音对比" class="compare"></canvas></div>
+  <div id="ac-result" class="small" role="status">接收正常：两条波形基本重合。</div>
+  <button id="ac-reset" class="full">恢复默认参数</button>
+</section>
+<p class="footnote">教学模型：频率 1–10 Hz 是波形显示尺度，射频载波显示频率也经过压缩。采用简化的滤波与理想包络恢复模型，并不逐样本模拟实际模拟电路。全部代码可离线运行，无第三方依赖。</p>
+</main><script src="app.js"></script></body></html>
