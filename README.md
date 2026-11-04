@@ -7,6 +7,7 @@
 | 目录 | 名称 | 技术 |
 | --- | --- | --- |
 | [camera-simulator/](./camera-simulator/) | 微单相机模拟器 | 原生 HTML/CSS/JavaScript、Canvas 2D |
+| [am-radio/](./am-radio/) | AM 收音机原理演示 | 原生 HTML/CSS/JavaScript、Canvas 2D |
 
 ## 本地运行
 
