@@ -8,6 +8,7 @@
 | --- | --- | --- |
 | [camera-simulator/](./camera-simulator/) | 微单相机模拟器 | 原生 HTML/CSS/JavaScript、Canvas 2D |
 | [am-radio/](./am-radio/) | AM 收音机原理演示 | 原生 HTML/CSS/JavaScript、Canvas 2D |
+| [gradient-descent/](./gradient-descent/) | 梯度下降实验室 | 原生 HTML/CSS/JavaScript、Canvas 2D |
 
 | [traffic-jam/](./traffic-jam/) | 幽灵堵车交通元胞自动机 | 原生 HTML/CSS/JavaScript、Canvas 2D |
 | [genetic-evolution/](./genetic-evolution/) | 进化实验室 | 原生 HTML/CSS/JavaScript、Canvas 2D |
@@ -39,3 +40,4 @@
 - 康威生命游戏和滑翔机真实碰撞使用同步 B3/S23 邻域计算；逻辑门动画是布尔信号教学抽象，并非经过验证的康威逻辑门实体电路。
 - 生态系统是简化个体模型，未使用真实生态数据标定。
 - 交通模拟基于单车道周期边界 NaSch 规则，时空图与基本图是模拟观测，不是实际道路预测。
+- 梯度下降实验室使用简化的二维损失曲面，仅用于展示学习率、动量与局部最小值等概念，不是可训练真实模型的 ML 框架。

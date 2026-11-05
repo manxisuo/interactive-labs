@@ -27,6 +27,7 @@
         <button class="chip active" type="button" data-filter="all">全部</button>
         <button class="chip" type="button" data-filter="optics">光学 / 显微</button>
         <button class="chip" type="button" data-filter="waves">信号 / 波动</button>
+        <button class="chip" type="button" data-filter="optimization">优化 / 机器学习</button>
         <button class="chip" type="button" data-filter="automata">元胞自动机</button>
         <button class="chip" type="button" data-filter="evolution">进化与生态</button>
       </div>
@@ -76,6 +77,21 @@
           <h2>多普勒效应实验室 ↗</h2>
           <p>推动声源速度，实时看见波阵面压缩与拉伸，感受接近与远离时的音高变化。</p>
           <div class="card-tech">Canvas 2D + Web Audio · 声波多普勒</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="group" data-group="optimization">
+    <h2 class="group-title"><span class="accent" aria-hidden="true"></span>优化 / 机器学习 <span class="count">1 个实验</span></h2>
+    <div class="card-grid">
+      <a class="lab-card" href="gradient-descent/" data-theme="optimization">
+        <div class="card-image"><img src="previews/gradient-descent.jpg" alt="梯度下降实验室预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">优化 / 机器学习</span><span class="card-num">10</span></div>
+          <h2>梯度下降实验室 ↗</h2>
+          <p>在二维损失曲面上放置起点，调整学习率与动量，观察优化器如何沿梯度下山。</p>
+          <div class="card-tech">Canvas 2D · 梯度下降教学可视化</div>
         </div>
       </a>
     </div>
@@ -141,7 +157,7 @@
   <footer class="home-footer">
     <a href="https://github.com/manxisuo/interactive-labs" target="_blank" rel="noopener">GitHub 仓库</a>
     <span aria-hidden="true">·</span>
-    <span id="lab-count">9 个实验</span>
+    <span id="lab-count">10 个实验</span>
   </footer>
 </main>
 
