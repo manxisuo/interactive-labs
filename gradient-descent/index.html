@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101923">
+  <meta name="description" content="交互式梯度下降演示：在损失曲面上放置起点，调整学习率与动量，观察优化器如何沿梯度下山。">
+  <title>梯度下降实验室 · Interactive Labs</title>
+  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="gd-lab" class="lab-container">
+  <header class="lab-top">
+    <div>
+      <a class="back" href="../">← 所有实验</a>
+      <h1>梯度下降实验室</h1>
+      <p>在二维损失曲面上拖动起点，实时观察 −∇L · η 如何带优化器下山。</p>
+    </div>
+    <button class="gd-btn" id="gd-reset" type="button">重置</button>
+  </header>
+
+  <div class="gd-layout">
+    <section class="gd-card gd-surface-card">
+      <div class="section-head">
+        <b>损失曲面</b>
+        <span class="live" id="gd-status">● 就绪</span>
+      </div>
+      <div class="surface-wrap">
+        <canvas id="gd-surface" width="800" height="500" aria-label="损失曲面"></canvas>
+      </div>
+      <p class="sub">点击或拖拽画布设置起点；橙色箭头指向当前 −∇L 方向，轨迹显示走过的路径。</p>
+    </section>
+
+    <aside class="gd-sidebar">
+      <section class="gd-card">
+        <div class="section-head"><b>损失景观</b><span class="sub">选择曲面形状</span></div>
+        <div class="button-row" id="gd-landscapes">
+          <button class="gd-btn active" type="button" data-landscape="bowl">凸碗</button>
+          <button class="gd-btn" type="button" data-landscape="himmelblau">Himmelblau 山谷</button>
+        </div>
+      </section>
+
+      <section class="gd-card">
+        <div class="control-row"><b>学习率 η</b><strong id="gd-lr-text">0.050</strong></div>
+        <input id="gd-lr" type="range" min="-3" max="-0.3" step="0.05" value="-1.30" aria-label="学习率">
+        <div class="range-label"><span>0.001</span><span>0.5</span></div>
+
+        <div class="control-row"><b>动量 β</b><strong id="gd-mom-text">0.00</strong></div>
+        <input id="gd-mom" type="range" min="0" max="0.95" step="0.05" value="0" aria-label="动量">
+        <div class="range-label"><span>无</span><span>0.95</span></div>
+
+        <div class="control-row"><b>运行速度</b><strong id="gd-speed-text">10 步/秒</strong></div>
+        <input id="gd-speed" type="range" min="1" max="30" step="1" value="10" aria-label="运行速度">
+        <div class="range-label"><span>慢</span><span>快</span></div>
+      </section>
+
+      <section class="gd-card">
+        <div class="section-head"><b>控制台</b></div>
+        <div class="button-row">
+          <button class="gd-btn primary" id="gd-step" type="button">步进一次</button>
+          <button class="gd-btn" id="gd-run" type="button">运行</button>
+        </div>
+      </section>
+
+      <section class="gd-card">
+        <div class="section-head"><b>实时读数</b></div>
+        <div class="stat-grid">
+          <div><p class="sub">位置 (x, y)</p><strong id="gd-pos">0.000, 0.000</strong></div>
+          <div><p class="sub">损失 L</p><strong id="gd-loss">0.000</strong></div>
+          <div><p class="sub">梯度 ∇L</p><strong id="gd-grad">0.000, 0.000</strong></div>
+          <div><p class="sub">步长 |v|</p><strong id="gd-step-size">0.000</strong></div>
+          <div><p class="sub">迭代</p><strong id="gd-iter">0</strong></div>
+        </div>
+      </section>
+
+      <section class="gd-card gd-chart-card">
+        <div class="section-head"><b>损失曲线</b><span class="sub">L 随迭代变化</span></div>
+        <canvas id="gd-chart" width="300" height="140" aria-label="损失曲线"></canvas>
+      </section>
+    </aside>
+  </div>
+
+  <section class="gd-card">
+    <div class="section-head"><b>教学说明</b></div>
+    <p class="explain">
+      梯度下降每一步都沿着当前梯度的反方向走一小段：θ ← θ − η·∇L。
+      学习率 η 控制步幅：太小收敛慢，太大会在山谷两侧震荡甚至“飞出”曲面。
+      动量 β 把历史速度累加进来，像小球滚下山时保留惯性，能更快穿过平缓区域；
+      但在非凸曲面里，它也可能带着优化器越过真正的低谷。
+    </p>
+    <p class="explain">
+      切换右侧的“Himmelblau 山谷”，可以看到多个局部最低点：起点不同，优化器可能被困在离起点最近的坑里。
+      把起点拖到不同位置， rerun 几次，体会初值如何决定最终落点。
+    </p>
+    <p class="sub">本演示是教学可视化，不是可用于真实训练的 ML 框架。</p>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
