@@ -27,7 +27,7 @@
 
 ## 新增实验
 
-新增 `some-demo/index.html` 及可选资源，并在根目录 `index.html` 添加卡片链接。
+新增 `some-demo/index.html` 及可选资源，并在根目录 `index.html` 添加卡片链接。首页按主题分组展示，卡片预览图放在 `previews/` 目录，新增实验时请同时补充一张 800×500 左右的 JPG/PNG 预览图。
 
 ## 关于模拟精度
 
