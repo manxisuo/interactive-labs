@@ -17,6 +17,7 @@
 | [doppler-effect/](./doppler-effect/) | 多普勒效应实验室 | 原生 HTML/CSS/JavaScript、Canvas 2D、Web Audio API |
 | [microscope/](./microscope/) | 光学显微镜实验室 | 原生 HTML/CSS/JavaScript、SVG、Canvas 2D |
 | [glider-logic/](./glider-logic/) | 滑翔机逻辑计算实验室 | 原生 HTML/CSS/JavaScript、Canvas 2D |
+| [forward-sonar/](./forward-sonar/) | 前视声呐探测 | 原生 HTML/CSS/JavaScript、Canvas 2D |
 
 ## 本地运行
 
@@ -41,3 +42,4 @@
 - 生态系统是简化个体模型，未使用真实生态数据标定。
 - 交通模拟基于单车道周期边界 NaSch 规则，时空图与基本图是模拟观测，不是实际道路预测。
 - 梯度下降实验室使用简化的二维损失曲面，仅用于展示学习率、动量与局部最小值等概念，不是可训练真实模型的 ML 框架。
+- 前视声呐探测采用射线/波束分箱 + 简化球面扩展与频率吸收损失 + 高斯噪声的教学近似模型，并非完整声场求解；声呐图像的余晖与扫描动画为视觉化处理。

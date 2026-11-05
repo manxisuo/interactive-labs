@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101923">
+  <meta name="description" content="前视声呐（FLS）探测过程交互演示：调节量程、扇区宽度、波束数、频率、增益与噪声，实时观察扇形声呐图像如何绘制回波。">
+  <title>前视声呐探测 · Interactive Labs</title>
+  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="fls-lab" class="lab-container">
+  <header class="lab-top">
+    <div>
+      <a class="back" href="../">← 所有实验</a>
+      <h1>前视声呐探测 · Forward-Looking Sonar</h1>
+      <p>发射扇形波束，接收海底与目标的回波，在 PPI 显示器上实时绘制距离—方位声呐图像。</p>
+    </div>
+    <span class="tag">SONAR / 声学</span>
+  </header>
+
+  <div class="fls-displays">
+    <section class="fls-card fls-scene-card">
+      <div class="section-head"><b>俯视场景</b><span class="sub">点击放置目标 · 拖拽移动 · 双击删除</span></div>
+      <div class="canvas-wrap" id="fls-scene-wrap">
+        <canvas id="fls-scene" width="800" height="500" aria-label="前视声呐俯视场景"></canvas>
+        <div class="overlay" style="top:10px;left:12px">SCENE · TOP-DOWN</div>
+        <div class="overlay" style="bottom:10px;right:12px" id="fls-scene-info">船速 0 kn</div>
+      </div>
+    </section>
+
+    <section class="fls-card fls-ppi-card">
+      <div class="section-head"><b>声呐图像 / PPI</b><span class="sub" id="fls-ppi-status">● 待机</span></div>
+      <div class="canvas-wrap" id="fls-ppi-wrap">
+        <canvas id="fls-ppi" width="500" height="500" aria-label="前视声呐 PPI 显示"></canvas>
+        <div class="overlay" style="top:10px;left:12px">PPI · RANGE–BEARING</div>
+        <div class="overlay" style="bottom:10px;left:12px" id="fls-ppi-cursor">悬停：—</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="fls-controls">
+    <section class="fls-card">
+      <div class="section-head"><b>场景预设</b></div>
+      <div class="button-row" id="fls-presets">
+        <button class="fls-btn active" type="button" data-preset="reef">礁石群</button>
+        <button class="fls-btn" type="button" data-preset="wreck">沉船残骸</button>
+        <button class="fls-btn" type="button" data-preset="fish">鱼群</button>
+        <button class="fls-btn" type="button" data-preset="slope">海底斜坡</button>
+        <button class="fls-btn" type="button" data-preset="empty">空场景</button>
+      </div>
+      <div class="section-head" style="margin-top:14px"><b>放置目标类型</b></div>
+      <div class="button-row" id="fls-obstacle-types">
+        <button class="fls-btn active" type="button" data-type="rock">礁石</button>
+        <button class="fls-btn" type="button" data-type="wreck">沉船</button>
+        <button class="fls-btn" type="button" data-type="fish">鱼群</button>
+        <button class="fls-btn" type="button" data-type="mine">水雷</button>
+      </div>
+    </section>
+
+    <section class="fls-card">
+      <div class="section-head"><b>声呐控制</b></div>
+      <div class="button-row">
+        <button class="fls-btn primary" id="fls-ping" type="button">▶ 单次发射</button>
+        <button class="fls-btn active" id="fls-scan" type="button">⏵ 连续扫描</button>
+        <button class="fls-btn" id="fls-pause" type="button">Ⅱ 暂停</button>
+        <button class="fls-btn" id="fls-clear-trail" type="button">↺ 清除余晖</button>
+        <button class="fls-btn" id="fls-reset-scene" type="button">↺ 重置场景</button>
+      </div>
+      <div class="control-row"><b>余晖保持</b><strong id="fls-persistence-text">0.85</strong></div>
+      <input id="fls-persistence" type="range" min="0" max="0.97" step="0.01" value="0.85" aria-label="余晖保持">
+      <div class="range-label"><span>无余晖</span><span>长余晖</span></div>
+    </section>
+
+    <section class="fls-card">
+      <div class="section-head"><b>声呐参数</b></div>
+
+      <div class="control-row"><b>最大量程</b><strong id="fls-range-text">300 m</strong></div>
+      <input id="fls-range" type="range" min="50" max="600" step="10" value="300" aria-label="最大量程">
+      <div class="range-label"><span>50 m</span><span>600 m</span></div>
+
+      <div class="control-row"><b>脉宽 / 距离分辨率</b><strong id="fls-pulse-text">0.5 m</strong></div>
+      <input id="fls-pulse" type="range" min="0.05" max="5" step="0.05" value="0.5" aria-label="脉宽">
+      <div class="range-label"><span>0.05 m</span><span>5 m</span></div>
+
+      <div class="control-row"><b>扇区开角</b><strong id="fls-sector-text">90°</strong></div>
+      <input id="fls-sector" type="range" min="10" max="160" step="5" value="90" aria-label="扇区开角">
+      <div class="range-label"><span>10°</span><span>160°</span></div>
+
+      <div class="control-row"><b>波束数量</b><strong id="fls-beams-text">64</strong></div>
+      <input id="fls-beams" type="range" min="4" max="128" step="1" value="64" aria-label="波束数量">
+      <div class="range-label"><span>4（角分辨率差）</span><span>128（角分辨率高）</span></div>
+
+      <div class="control-row"><b>频率</b><strong id="fls-freq-text">200 kHz</strong></div>
+      <input id="fls-freq" type="range" min="50" max="500" step="10" value="200" aria-label="频率">
+      <div class="range-label"><span>50 kHz（低衰減）</span><span>500 kHz（高分辨·高衰減）</span></div>
+
+      <div class="control-row"><b>发射功率 / 增益</b><strong id="fls-gain-text">0 dB</strong></div>
+      <input id="fls-gain" type="range" min="-20" max="40" step="1" value="0" aria-label="发射增益">
+      <div class="range-label"><span>弱</span><span>强</span></div>
+
+      <div class="control-row"><b>TVG 时变增益</b><strong id="fls-tvg-text">0.80</strong></div>
+      <input id="fls-tvg" type="range" min="0" max="1.2" step="0.05" value="0.80" aria-label="TVG">
+      <div class="range-label"><span>关闭（远端暗）</span><span>强补偿（远端亮）</span></div>
+
+      <div class="control-row"><b>噪声 / SNR</b><strong id="fls-noise-text">−30 dB</strong></div>
+      <input id="fls-noise" type="range" min="-60" max="-10" step="1" value="-30" aria-label="噪声电平">
+      <div class="range-label"><span>安静</span><span>嘈杂</span></div>
+
+      <div class="control-row"><b>扫描速率</b><strong id="fls-rate-text">2.0 Hz</strong></div>
+      <input id="fls-rate" type="range" min="0.2" max="10" step="0.1" value="2.0" aria-label="扫描速率">
+      <div class="range-label"><span>慢</span><span>快</span></div>
+
+      <div class="control-row"><b>船速</b><strong id="fls-speed-text">0 kn</strong></div>
+      <input id="fls-speed" type="range" min="0" max="12" step="0.5" value="0" aria-label="船速">
+      <div class="range-label"><span>静止</span><span>12 kn</span></div>
+    </section>
+
+    <section class="fls-card">
+      <div class="section-head"><b>实时读数</b></div>
+      <div class="stat-grid">
+        <div><p class="sub">水中声速</p><strong>1500 m/s</strong></div>
+        <div><p class="sub">距离分辨率 Δr</p><strong id="fls-dr">0.50 m</strong></div>
+        <div><p class="sub">角分辨率</p><strong id="fls-da">1.41°</strong></div>
+        <div><p class="sub">双程时间 (满量程)</p><strong id="fls-tt">0.40 s</strong></div>
+        <div><p class="sub">频率吸收损失</p><strong id="fls-abs">0.9 dB</strong></div>
+        <div><p class="sub">当前回波强度</p><strong id="fls-echo">— dB</strong></div>
+        <div><p class="sub">光标距离</p><strong id="fls-cursor-r">— m</strong></div>
+        <div><p class="sub">光标方位</p><strong id="fls-cursor-b">— °</strong></div>
+      </div>
+      <div class="section-head" style="margin-top:14px"><b>色表</b></div>
+      <div class="button-row" id="fls-colormaps">
+        <button class="fls-btn active" type="button" data-cmap="sonar">声呐绿</button>
+        <button class="fls-btn" type="button" data-cmap="thermal">热成像</button>
+        <button class="fls-btn" type="button" data-cmap="gray">灰度</button>
+      </div>
+    </section>
+  </div>
+
+  <section class="fls-card">
+    <div class="section-head"><b>教学说明</b></div>
+    <p class="explain">
+      前视声呐向前方发射一个扇形声波束（或一组窄波束），声波以约 <b>1500 m/s</b> 在水中传播，
+      遇到海底或物体后反射回来。接收机通过<b>双程传播时间</b>计算距离：<em>r = c·t/2</em>。
+      因此 300 m 量程需要等约 <b>0.4 s</b> 才能收到最远回波——这就是 PPI 图像从近到远逐步“绘出”的原因。
+    </p>
+    <p class="explain">
+      <b>波束数量</b>决定角分辨率：N 个波束覆盖 Ω 扇区时，每个波束宽 Ω/N。波束越窄，目标在方位上越锐利，但波束数太少会让单个目标“糊”成一片。
+      <b>脉宽</b>决定距离分辨率 Δr = c·τ/2，脉宽越短、距离上越能分清前后两个目标。
+    </p>
+    <p class="explain">
+      声波随距离衰减：球面扩展损失 40·log₁₀(r) dB（双程），加上与频率相关的<b>吸收损失</b>（频率越高、衰减越快）。
+      <b>TVG 时变增益</b>随回波到达时间提高增益，补偿远端衰减，让远近目标亮度更均匀；补偿过强会把远处噪声也放大。
+      <b>噪声</b>越高、信噪比越低，弱小目标会被淹没成杂波。礁石/沉船是强点状回波，鱼群是弥散云团，海底斜坡则表现为随距离渐变的连续混响。
+    </p>
+    <p class="sub">本演示为教学近似：采用射线/波束分箱 + 简化扩展与吸收损失 + 高斯噪声，并非完整声场求解。</p>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
