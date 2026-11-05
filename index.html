@@ -1,1 +1,185 @@
-<!doctype html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f1823"><title>Interactive Labs · 交互实验集</title><link rel="stylesheet" href="shared.css"><style>.intro{padding:65px 0 28px}.intro h1{font-size:clamp(2rem,5vw,3.5rem);margin:0 0 12px}.intro p{color:#a6b7c8;line-height:1.9}.tag{display:inline-block;padding:5px 10px;border:1px solid #3e6681;border-radius:999px;color:#9dccf0;font-size:12px}.item{display:block;border:1px solid #375066;border-radius:16px;background:linear-gradient(135deg,#233e51,#1c2b3c);padding:26px;margin-top:23px;color:#e9f2f9;transition:transform .15s}.item:hover{transform:translateY(-3px);text-decoration:none}.item h2{margin:12px 0 8px}.item p{color:#b3c3d2;line-height:1.8}.footer{color:#8fa6b8;font-size:12px;margin-top:40px}</style></head><body><main class="lab-container"><header class="intro"><span class="tag">Open experiments · No build · Static web</span><h1>Interactive Labs</h1><p>交互实验集：收藏由 Intelligent UI 和其他 Web 技术制作的交互式小实验。每个实验独立子目录，可以直接通过浏览器访问。</p></header><a class="item" href="camera-simulator/"><span class="tag">01 · 摄影 / 光学</span><h2>微单相机模拟器 ↗</h2><p>实时变焦、对焦、光圈、快门速度、ISO、曝光指示、景深与噪声模拟。支持拍照与 PNG 保存。</p></a><a class="item" href="am-radio/"><span class="tag">02 · 无线电 / 信号处理</span><h2>AM 收音机原理演示 ↗</h2><p>可调节原始声音频率和振幅，实时观察 AM 载波、调幅信号、选频、检波还原，以及双电台切换与波形对比。</p></a><a class="item" href="traffic-jam/"><span class="tag">03 · 元胞自动机 / 交通科学</span><h2>幽灵堵车 · 交通模拟器 ↗</h2><p>NaSch 模型、环形车流、密度与速度调节、随机刹车、拥堵时空图及交通流基本图。</p></a><a class="item" href="genetic-evolution/"><span class="tag">04 · 进化算法 / 遗传优化</span><h2>进化实验室 ↗</h2><p>种群、适应度、选择、交叉与变异。观察随机个体如何逐代探索避障路径。</p></a><a class="item" href="game-of-life/"><span class="tag">05 · 元胞自动机</span><h2>康威生命游戏 ↗</h2><p>B3/S23 生命规则、自由绘制、滑翔机与脉冲星等经典图案、单步与演化速度。</p></a><a class="item" href="ecosystem/"><span class="tag">06 · 多智能体 / 生态模拟</span><h2>微型生态圈 ↗</h2><p>植物、兔子与狐狸组成的生态系统，支持投放、场景切换和种群数量曲线。</p></a><a class="item" href="glider-logic/"><span class="tag">07 · 元胞自动机 / 逻辑计算</span><h2>滑翔机逻辑计算实验室 ↗</h2><p>AND、OR、XOR、NAND 信号实验，附真实 B3/S23 滑翔机碰撞模拟。</p></a><a class="item" href="microscope/"><span class="tag">08 · 光学 / 显微观察</span><h2>光学显微镜实验室 ↗</h2><p>可操作物镜转换器、粗细调焦、载物台与照明系统；实时观察洋葱表皮、植物叶片和血液涂片，支持 4×–100× 物镜。</p></a><a class="item" href="doppler-effect/"><span class="tag">09 · 波动 / 声学</span><h2>多普勒效应实验室 ↗</h2><p>动态观察运动声源的波阵面压缩与拉伸，调节声源速度和频率，并实时比较原始频率与观察频率，支持纯音试听。</p></a><div class="footer">Built with HTML · CSS · JavaScript · Canvas 2D</div></main></body></html>
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0f1823">
+  <meta name="description" content="交互实验集：用可操作的模拟探索光学、波动、元胞自动机与进化生态。每个实验都是独立静态页面，直接在浏览器中运行。">
+  <meta property="og:title" content="Interactive Labs · 交互实验集">
+  <meta property="og:description" content="用可操作的网页模拟探索光学、波动、元胞自动机与进化生态。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://manxisuo.github.io/interactive-labs/">
+  <meta property="og:image" content="https://manxisuo.github.io/interactive-labs/previews/camera-simulator.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <title>Interactive Labs · 交互实验集</title>
+  <link rel="stylesheet" href="shared.css">
+</head>
+<body>
+<main class="lab-container">
+  <header class="home-intro">
+    <span class="tag">Open experiments · No build · Static web</span>
+    <h1>Interactive Labs</h1>
+    <p>交互实验集：用可操作的模拟探索光学、波动、元胞自动机与进化生态。每个实验独立子目录，不需要编译或后端，可以直接通过浏览器访问。</p>
+
+    <div class="home-controls">
+      <button class="btn-random" id="random-lab" type="button">随机打开一个实验</button>
+      <div class="filter-chips" id="theme-filters" role="group" aria-label="主题筛选">
+        <button class="chip active" type="button" data-filter="all">全部</button>
+        <button class="chip" type="button" data-filter="optics">光学 / 显微</button>
+        <button class="chip" type="button" data-filter="waves">信号 / 波动</button>
+        <button class="chip" type="button" data-filter="automata">元胞自动机</button>
+        <button class="chip" type="button" data-filter="evolution">进化与生态</button>
+      </div>
+    </div>
+  </header>
+
+  <section class="group" data-group="optics">
+    <h2 class="group-title"><span class="accent" aria-hidden="true"></span>光学 / 显微 <span class="count">2 个实验</span></h2>
+    <div class="card-grid">
+      <a class="lab-card" href="camera-simulator/" data-theme="optics">
+        <div class="card-image"><img src="previews/camera-simulator.jpg" alt="微单相机模拟器预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">光学 / 显微</span><span class="card-num">01</span></div>
+          <h2>微单相机模拟器 ↗</h2>
+          <p>实时拧动焦距、光圈、ISO、快门，观察曝光、景深与噪声如何改变画面。</p>
+          <div class="card-tech">Canvas 2D · 摄影参数教学模型</div>
+        </div>
+      </a>
+      <a class="lab-card" href="microscope/" data-theme="optics">
+        <div class="card-image"><img src="previews/microscope.jpg" alt="光学显微镜实验室预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">光学 / 显微</span><span class="card-num">08</span></div>
+          <h2>光学显微镜实验室 ↗</h2>
+          <p>切换 4×–100× 物镜，调节粗细焦螺旋，观察洋葱表皮、叶片与血液涂片。</p>
+          <div class="card-tech">SVG + Canvas · 光学显微教学模型</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="group" data-group="waves">
+    <h2 class="group-title"><span class="accent" aria-hidden="true"></span>信号 / 波动 <span class="count">2 个实验</span></h2>
+    <div class="card-grid">
+      <a class="lab-card" href="am-radio/" data-theme="waves">
+        <div class="card-image"><img src="previews/am-radio.jpg" alt="AM 收音机原理演示预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">信号 / 波动</span><span class="card-num">02</span></div>
+          <h2>AM 收音机原理演示 ↗</h2>
+          <p>拖动声音频率与振幅，观察载波如何被调幅、选频、检波还原成声音。</p>
+          <div class="card-tech">Canvas 2D · AM 调制与检波教学</div>
+        </div>
+      </a>
+      <a class="lab-card" href="doppler-effect/" data-theme="waves">
+        <div class="card-image"><img src="previews/doppler-effect.jpg" alt="多普勒效应实验室预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">信号 / 波动</span><span class="card-num">09</span></div>
+          <h2>多普勒效应实验室 ↗</h2>
+          <p>推动声源速度，实时看见波阵面压缩与拉伸，感受接近与远离时的音高变化。</p>
+          <div class="card-tech">Canvas 2D + Web Audio · 声波多普勒</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="group" data-group="automata">
+    <h2 class="group-title"><span class="accent" aria-hidden="true"></span>元胞自动机 <span class="count">3 个实验</span></h2>
+    <div class="card-grid">
+      <a class="lab-card" href="traffic-jam/" data-theme="automata">
+        <div class="card-image"><img src="previews/traffic-jam.jpg" alt="幽灵堵车交通模拟器预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">元胞自动机</span><span class="card-num">03</span></div>
+          <h2>幽灵堵车 · 交通模拟器 ↗</h2>
+          <p>调节密度、限速、随机刹车，在环形公路上观察拥堵波如何凭空出现。</p>
+          <div class="card-tech">NaSch 单车道元胞自动机</div>
+        </div>
+      </a>
+      <a class="lab-card" href="game-of-life/" data-theme="automata">
+        <div class="card-image"><img src="previews/game-of-life.jpg" alt="康威生命游戏预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">元胞自动机</span><span class="card-num">05</span></div>
+          <h2>康威生命游戏 ↗</h2>
+          <p>在网格上播种细胞，看 B3/S23 规则如何让滑翔机、脉冲星自行演化。</p>
+          <div class="card-tech">B3/S23 元胞自动机</div>
+        </div>
+      </a>
+      <a class="lab-card" href="glider-logic/" data-theme="automata">
+        <div class="card-image"><img src="previews/glider-logic.jpg" alt="滑翔机逻辑计算实验室预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">元胞自动机</span><span class="card-num">07</span></div>
+          <h2>滑翔机逻辑计算实验室 ↗</h2>
+          <p>把滑翔机当作 0/1 信号，运行 AND、OR、XOR、NAND 碰撞实验。</p>
+          <div class="card-tech">元胞自动机 · 布尔逻辑教学</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <section class="group" data-group="evolution">
+    <h2 class="group-title"><span class="accent" aria-hidden="true"></span>进化与生态 <span class="count">2 个实验</span></h2>
+    <div class="card-grid">
+      <a class="lab-card" href="genetic-evolution/" data-theme="evolution">
+        <div class="card-image"><img src="previews/genetic-evolution.jpg" alt="进化实验室预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">进化与生态</span><span class="card-num">04</span></div>
+          <h2>进化实验室 ↗</h2>
+          <p>放出一群随机个体，让选择、交叉与变异带领种群绕过障碍抵达目标。</p>
+          <div class="card-tech">遗传算法 · 固定长度基因</div>
+        </div>
+      </a>
+      <a class="lab-card" href="ecosystem/" data-theme="evolution">
+        <div class="card-image"><img src="previews/ecosystem.jpg" alt="微型生态圈预览" loading="lazy"></div>
+        <div class="card-body">
+          <div class="card-meta"><span class="card-tag">进化与生态</span><span class="card-num">06</span></div>
+          <h2>微型生态圈 ↗</h2>
+          <p>种植物、放兔子、加狐狸，观察捕食与繁殖如何涌现出种群周期。</p>
+          <div class="card-tech">多智能体离散生态模型</div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+  <footer class="home-footer">
+    <a href="https://github.com/manxisuo/interactive-labs" target="_blank" rel="noopener">GitHub 仓库</a>
+    <span aria-hidden="true">·</span>
+    <span id="lab-count">9 个实验</span>
+  </footer>
+</main>
+
+<script>
+  (function() {
+    const cards = document.querySelectorAll('.lab-card');
+    const groups = document.querySelectorAll('.group');
+    const chips = document.querySelectorAll('.chip');
+
+    function applyFilter(filter) {
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const show = filter === 'all' || card.dataset.theme === filter;
+        card.classList.toggle('hidden', !show);
+        if (show) visibleCount++;
+      });
+      groups.forEach(group => {
+        const visibleCards = group.querySelectorAll('.lab-card:not(.hidden)');
+        group.classList.toggle('hidden', visibleCards.length === 0);
+      });
+      document.getElementById('lab-count').textContent = visibleCount + ' 个实验';
+    }
+
+    document.getElementById('theme-filters').addEventListener('click', function(e) {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      applyFilter(chip.dataset.filter);
+    });
+
+    document.getElementById('random-lab').addEventListener('click', function() {
+      const visible = Array.from(cards).filter(c => !c.classList.contains('hidden'));
+      if (visible.length === 0) return;
+      const pick = visible[Math.floor(Math.random() * visible.length)];
+      window.location.href = pick.href;
+    });
+  })();
+</script>
+</body>
+</html>
