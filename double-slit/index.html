@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#101923">
+  <meta name="description" content="杨氏双缝干涉交互演示：调节波长、缝间距、缝宽与屏距，观察干涉条纹与单缝衍射包络。">
+  <title>杨氏双缝干涉 · Interactive Labs</title>
+  <link rel="stylesheet" href="../shared.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="ds-lab" class="lab-container">
+  <header class="lab-top">
+    <div>
+      <a class="back" href="../">← 所有实验</a>
+      <h1>杨氏双缝干涉 · Young's Double Slit</h1>
+      <p>调节波长、缝间距、缝宽与屏距，实时观察干涉条纹与单缝衍射包络如何变化。</p>
+    </div>
+    <span class="tag">LIGHT / 光学</span>
+  </header>
+
+  <div class="ds-layout">
+    <div class="ds-main">
+      <section class="ds-card">
+        <div class="section-head">
+          <b>实验装置示意</b>
+          <span class="sub" id="ds-mode-label">双缝干涉</span>
+        </div>
+        <div class="canvas-wrap" id="ds-scene-wrap">
+          <canvas id="ds-scene" width="900" height="420" aria-label="杨氏双缝干涉装置与波场示意"></canvas>
+          <div class="overlay" style="top:10px;left:12px">TOP-DOWN · WAVEFIELD</div>
+          <div class="overlay" style="bottom:10px;left:12px" id="ds-legend">
+            <span class="leg bright">亮纹</span>
+            <span class="leg dark">暗纹</span>
+          </div>
+        </div>
+      </section>
+
+      <section class="ds-card">
+        <div class="section-head">
+          <b>屏幕光强分布 I(y)</b>
+          <span class="sub">归一化相对强度</span>
+        </div>
+        <div class="canvas-wrap intensity-wrap">
+          <canvas id="ds-intensity" width="900" height="220" aria-label="屏幕光强分布曲线"></canvas>
+          <div class="overlay" style="top:8px;left:12px">INTENSITY · SCREEN</div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="ds-sidebar">
+      <section class="ds-card">
+        <div class="section-head"><b>模式</b></div>
+        <div class="button-row" id="ds-modes">
+          <button class="ds-btn active" type="button" data-mode="double">双缝干涉</button>
+          <button class="ds-btn" type="button" data-mode="single">单缝衍射</button>
+        </div>
+        <div class="button-row" style="margin-top:10px">
+          <button class="ds-btn" id="ds-wave-toggle" type="button">隐藏波场</button>
+          <button class="ds-btn" id="ds-envelope-toggle" type="button">隐藏包络</button>
+          <button class="ds-btn" id="ds-reset" type="button">↺ 重置</button>
+        </div>
+      </section>
+
+      <section class="ds-card">
+        <div class="section-head"><b>光学参数</b></div>
+
+        <div class="control-row"><b>波长 λ</b><strong id="ds-lambda-text">550 nm</strong></div>
+        <input id="ds-lambda" type="range" min="380" max="700" step="5" value="550" aria-label="波长">
+        <div class="range-label"><span>380 nm 紫</span><span>700 nm 红</span></div>
+        <div class="wavelength-swatch" id="ds-swatch" aria-hidden="true"></div>
+
+        <div class="control-row"><b>缝间距 d</b><strong id="ds-sep-text">0.20 mm</strong></div>
+        <input id="ds-sep" type="range" min="0.05" max="0.80" step="0.01" value="0.20" aria-label="缝间距">
+        <div class="range-label"><span>0.05 mm</span><span>0.80 mm</span></div>
+
+        <div class="control-row"><b>缝宽 a</b><strong id="ds-width-text">0.04 mm</strong></div>
+        <input id="ds-width" type="range" min="0.01" max="0.20" step="0.005" value="0.04" aria-label="缝宽">
+        <div class="range-label"><span>0.01 mm</span><span>0.20 mm</span></div>
+
+        <div class="control-row"><b>屏距 L</b><strong id="ds-dist-text">1.00 m</strong></div>
+        <input id="ds-dist" type="range" min="0.30" max="3.00" step="0.05" value="1.00" aria-label="屏距">
+        <div class="range-label"><span>0.30 m</span><span>3.00 m</span></div>
+      </section>
+
+      <section class="ds-card">
+        <div class="section-head"><b>预设</b></div>
+        <div class="button-row" id="ds-presets">
+          <button class="ds-btn" type="button" data-preset="classic">经典绿光</button>
+          <button class="ds-btn" type="button" data-preset="red-wide">红光宽条纹</button>
+          <button class="ds-btn" type="button" data-preset="blue-dense">蓝光密条纹</button>
+          <button class="ds-btn" type="button" data-preset="envelope">包络演示</button>
+        </div>
+      </section>
+
+      <section class="ds-card">
+        <div class="section-head"><b>实时读数</b></div>
+        <div class="stat-grid">
+          <div><p class="sub">条纹间距 Δy</p><strong id="ds-fringe">—</strong></div>
+          <div><p class="sub">中央最大</p><strong id="ds-central">1.00</strong></div>
+          <div><p class="sub">第一级暗纹 y</p><strong id="ds-dark1">—</strong></div>
+          <div><p class="sub">包络第一零点</p><strong id="ds-env0">—</strong></div>
+          <div><p class="sub">相位差 δ(屏心)</p><strong id="ds-phase">0</strong></div>
+          <div><p class="sub">路径差 δx(屏心)</p><strong id="ds-path">0</strong></div>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+  <section class="ds-card">
+    <div class="section-head"><b>教学说明</b></div>
+    <p class="explain">
+      单色平面波照射两条相距 <b>d</b>、各宽 <b>a</b> 的狭缝后，在距离 <b>L</b> 的屏幕上形成干涉图样。
+      远场相对强度近似为
+      <em>I(θ) ∝ [sinc(β)]² · [cos(δ/2)]²</em>，
+      其中 <em>β = π a sinθ / λ</em>（单缝衍射包络），
+      <em>δ = π d sinθ / λ</em>（双缝干涉振荡）。
+    </p>
+    <p class="explain">
+      小角度下条纹间距 <em>Δy ≈ λ L / d</em>：波长更长、屏更远、缝更近 → 条纹更疏；
+      缝宽 <em>a</em> 越大，衍射包络越窄，可见干涉条纹越少。
+      切换到「单缝衍射」时只保留包络项，中央亮区与两侧暗纹对应衍射极小。
+    </p>
+    <p class="sub">本演示为教学近似：采用远场 Fraunhofer 强度公式 + 俯视波场示意动画，不是完整波动方程求解；屏幕竖直尺度按教学可读性缩放。</p>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
