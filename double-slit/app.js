@@ -123,6 +123,18 @@
     return (lambda * state.distM) / a;
   }
 
+  // Fixed physical y-axis (referenced to L=1 m) so changing L visibly
+  // stretches/compresses fringes instead of auto-rescaling them away.
+  function screenYMax() {
+    const lambda = state.lambdaNm * 1e-9;
+    const d = Math.max(state.sepMm * 1e-3, 1e-6);
+    const a = Math.max(state.widthMm * 1e-3, 1e-6);
+    const Lref = 1.0;
+    const yFromFringes = ((lambda * Lref) / d) * 8;
+    const yFromEnv = ((lambda * Lref) / a) * 1.15;
+    return Math.max(yFromFringes, yFromEnv, 0.002);
+  }
+
   function fmtLen(meters) {
     if (!isFinite(meters)) return '—';
     if (meters < 1e-3) return (meters * 1e6).toFixed(1) + ' μm';
@@ -167,9 +179,11 @@
     const midY = padT + usableH / 2;
 
     // Layout in scene coords: source | slits | wave region | screen
+    // Screen x tracks L (0.30–3.00 m → near/far) so distance is visible.
     const xSource = padL + usableW * 0.06;
     const xSlit = padL + usableW * 0.28;
-    const xScreen = padL + usableW * 0.92;
+    const Lnorm = clamp((state.distM - 0.3) / (3.0 - 0.3), 0, 1);
+    const xScreen = padL + usableW * (0.52 + Lnorm * 0.40);
     const waveLeft = xSlit + 10;
     const waveRight = xScreen - 8;
 
@@ -261,7 +275,7 @@
 
     // Screen strip with fringe pattern
     const screenH = plateBot - plateTop;
-    const yMaxPhys = Math.max(envelopeZero() * 1.15, fringeSpacing() * 8, 0.002);
+    const yMaxPhys = screenYMax();
     const screenX = xScreen;
     const screenW = 18;
     for (let py = 0; py < screenH; py++) {
@@ -354,15 +368,16 @@
     ig.lineTo(padL + plotW, padT + plotH);
     ig.stroke();
 
+    const yMaxPhys = screenYMax();
+
     ig.fillStyle = '#8fa6b8';
     ig.font = '11px system-ui';
     ig.textAlign = 'right';
     ig.fillText('I', padL - 10, padT + 8);
     ig.textAlign = 'center';
-    ig.fillText('y', padL + plotW - 4, padT + plotH + 20);
+    ig.fillText('+' + fmtLen(yMaxPhys), padL + plotW - 2, padT + plotH + 18);
     ig.fillText('0', padL + plotW / 2, padT + plotH + 18);
-
-    const yMaxPhys = Math.max(envelopeZero() * 1.15, fringeSpacing() * 8, 0.002);
+    ig.fillText('−' + fmtLen(yMaxPhys), padL + 8, padT + plotH + 18);
 
     // Grid
     ig.strokeStyle = '#2a3d4e';
